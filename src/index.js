@@ -5,11 +5,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 
-//install dependencies 
-
+//INSTALL DEPENDENCIES 
+//npm install react
 //npm install three @react-three/fiber
-
 //npm install @material-ui/core
+//RUN THE APP
+//npm start
 
 
 ReactDOM.render(

@@ -4,9 +4,7 @@ import Product_tile from './Product_tile';
 import {Canvas} from '@react-three/fiber'; 
 import {Grid} from '@material-ui/core';
 import Model_loader from './Model_loader';
-
-
-
+import Loader2 from './Loader2'; 
 
 
 
@@ -24,6 +22,7 @@ function Product_page() {
                 <Grid item xs= {1}> </Grid>
                 <Grid item xs={7}>
                     <Model_loader /> 
+                    {/*
                     <Canvas>
                         <ambientLight intensity={0.1} />
                         <directionalLight color="red" position={[0, 0, 5]} />
@@ -32,6 +31,7 @@ function Product_page() {
                             <meshStandardMaterial />
                         </mesh>
                     </Canvas>
+                    */}
                     
                 </Grid>
                 <Grid item xs={3}>
@@ -53,5 +53,5 @@ function Product_page() {
         
     )
     }
-
+    
 export default Product_page
