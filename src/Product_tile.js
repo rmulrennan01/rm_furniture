@@ -38,7 +38,7 @@ function Product_tile(props) {
             <br/> 
 
 
-            <Button color="primary" variant="contained"> Reserve Now </Button>
+            <Button color="primary" variant="contained"> Order Now </Button>
 
             
 

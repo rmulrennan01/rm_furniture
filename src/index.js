@@ -9,6 +9,7 @@ import reportWebVitals from './reportWebVitals';
 //npm install react
 //npm install three @react-three/fiber
 //npm install @material-ui/core
+//npm install @material-ui/icons
 //RUN THE APP
 //npm start
 

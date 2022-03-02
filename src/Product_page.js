@@ -6,6 +6,7 @@ import {Grid} from '@material-ui/core';
 import Model_loader from './Model_loader';
 import Loader2 from './Loader2'; 
 
+import Nav_bar from './Nav_bar';
 
 
 
@@ -18,11 +19,11 @@ function Product_page() {
 
     return (
         <div>
+            <Nav_bar />
             <Grid container spacing={2}>
                 <Grid item xs= {1}> </Grid>
                 <Grid item xs={7}>
-                    <Model_loader /> 
-                    {/*
+                    {/*<Model_loader />*/ }
                     <Canvas>
                         <ambientLight intensity={0.1} />
                         <directionalLight color="red" position={[0, 0, 5]} />
@@ -31,10 +32,11 @@ function Product_page() {
                             <meshStandardMaterial />
                         </mesh>
                     </Canvas>
-                    */}
+   
                     
                 </Grid>
                 <Grid item xs={3}>
+                   
                     <Product_tile 
                         prod_data = {  [["Width:",'50"'],["Depth:",'22"'],["Height:",'30"'],
                         ["Drawer Box Material Options:","Baltic Birch or Maple"], ["Finish Options:","Clear Satin Polyurethane or Natural Danish Oil"],
