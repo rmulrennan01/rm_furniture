@@ -8,6 +8,7 @@
 
 .Nav_bar__Button:hover{
     background-color: lightgrey !important;
+    font-weight: bold;
 
 }
 
@@ -17,3 +18,4 @@
     background-color: white !important; 
     
 }
+

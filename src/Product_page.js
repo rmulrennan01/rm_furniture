@@ -6,7 +6,6 @@ import {Grid} from '@material-ui/core';
 import Model_loader from './Model_loader';
 import Loader2 from './Loader2'; 
 
-import Navbar from './Navbar';
 
 
 
@@ -19,7 +18,7 @@ function Product_page() {
 
     return (
         <div>
-            <Navbar />
+            
             <Grid container spacing={2}>
                 <Grid item xs= {1}> </Grid>
                 <Grid item xs={7}>

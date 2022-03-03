@@ -17,9 +17,9 @@ function Navbar() {
                         
                             <Link className='Nav_bar__Button' href="/" underline="none">Home</Link> 
                             <Link className='Nav_bar__Button' href="/Products"  underline="none">Furniture</Link> 
-                            <Link className='Nav_bar__Button' variant="button" underline="none">Inspiration</Link> 
-                            <Link className='Nav_bar__Button' variant="button" underline="none">Materials</Link> 
-                            <Link className='Nav_bar__Button' variant="button" underline="none">About</Link> 
+                            <Link className='Nav_bar__Button'  underline="none">Inspiration</Link> 
+                            <Link className='Nav_bar__Button' underline="none">Materials</Link> 
+                            <Link className='Nav_bar__Button'  underline="none">About</Link> 
                         
                     </Hidden>
                     <Hidden smUp>
@@ -31,11 +31,25 @@ function Navbar() {
                     </Toolbar>
                 </Container>
                 <SwipeableDrawer open={showMenu} onOpen={() => set_showMenu(true)} onClose={() => set_showMenu(false)} anchor="top">
-                    <Button onClick={()=>set_showMenu(false)}> Close </Button>
+                    <Link onClick={()=>set_showMenu(false)} className='Nav_bar__Button' underline="none"> Close </Link>
                     <List>
                         <ListItem>
-                            Hey
+                            <Link className='Nav_bar__Button' href="/" underline="none">Home</Link> 
+                            
                         </ListItem>
+                        <ListItem>
+                            <Link className='Nav_bar__Button' href="/Products"  underline="none">Furniture</Link> 
+                        </ListItem>
+                        <ListItem>
+                            <Link className='Nav_bar__Button' href="/Products"  underline="none">Inspiration</Link> 
+                        </ListItem>
+                        <ListItem>
+                            <Link className='Nav_bar__Button' href="/Products"  underline="none">Materials</Link> 
+                        </ListItem>
+                        <ListItem>
+                            <Link className='Nav_bar__Button' href="/Products"  underline="none">About</Link> 
+                        </ListItem>
+                        
                     </List>
 
 
