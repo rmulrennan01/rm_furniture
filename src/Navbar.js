@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import "./Nav_bar.css"
-import {AppBar, List, Toolbar, Button, Container, Avatar, Hidden, SwipeableDrawer, ListItem} from '@material-ui/core';
+import {Link, AppBar, List, Toolbar, Button, Container, Avatar, Hidden, SwipeableDrawer, ListItem} from '@material-ui/core';
 import MenuIcon from "@material-ui/icons/Menu";
 import IconButton from "@material-ui/core/IconButton";
-function Nav_bar() {
+function Navbar() {
     const [showMenu, set_showMenu] = useState(false); 
 
   return (
@@ -15,11 +15,11 @@ function Nav_bar() {
 
                     <Hidden xsDown>
                         
-                            <Button className='Nav_bar__Button' variant="button" underline="none">Home</Button> 
-                            <Button className='Nav_bar__Button' variant="button" underline="none">Furniture</Button> 
-                            <Button className='Nav_bar__Button' variant="button" underline="none">Inspiration</Button> 
-                            <Button className='Nav_bar__Button' variant="button" underline="none">Materials</Button> 
-                            <Button className='Nav_bar__Button' variant="button" underline="none">About</Button> 
+                            <Link className='Nav_bar__Button' href="/" underline="none">Home</Link> 
+                            <Link className='Nav_bar__Button' href="/Products"  underline="none">Furniture</Link> 
+                            <Link className='Nav_bar__Button' variant="button" underline="none">Inspiration</Link> 
+                            <Link className='Nav_bar__Button' variant="button" underline="none">Materials</Link> 
+                            <Link className='Nav_bar__Button' variant="button" underline="none">About</Link> 
                         
                     </Hidden>
                     <Hidden smUp>
@@ -46,4 +46,4 @@ function Nav_bar() {
   )
 }
 
-export default Nav_bar
+export default Navbar

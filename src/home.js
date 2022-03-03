@@ -1,10 +1,15 @@
 import React from 'react'
-import product_page from './product_page'
+import Navbar from './Navbar'
 
-function home() {
+
+function Home() {
   return (
-    <div>home</div>
+    <div>
+      <Navbar />
+      <br></br>
+      I'm fucking here!
+    </div>
   )
 }
 
-export default home
+export default Home

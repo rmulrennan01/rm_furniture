@@ -4,22 +4,38 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+//Router
+
+import { BrowserRouter } from "react-router-dom";
+
 
 //INSTALL DEPENDENCIES 
 //npm install react
 //npm install three @react-three/fiber
 //npm install @material-ui/core
 //npm install @material-ui/icons
+//npm install react-router-dom@6
+
+
+
 //RUN THE APP
 //npm start
 
-
+/*
 ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
+*/
+
+ReactDOM.render(
+  <BrowserRouter>
+    <App /> 
+  </BrowserRouter>,
+  document.getElementById('root') 
+); 
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

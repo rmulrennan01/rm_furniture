@@ -1,6 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
-import Product_page from './Product_page'
+//Router
+import { Routes, Route, Link } from "react-router-dom";
+
+
+
+//Pages
+import Home from "./Home.js"; 
+import Product_page from './Product_page.js'
 
 
 function App() {
@@ -8,7 +15,15 @@ function App() {
 
   return (
     <div>
-      <Product_page /> 
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Products" element={<Product_page />} />
+         
+
+
+
+      </Routes>
+      
 
 
     
