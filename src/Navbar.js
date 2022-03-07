@@ -16,7 +16,7 @@ function Navbar() {
                     <Hidden xsDown>
                         
                             <Link className='Nav_bar__Button' href="/" underline="none">Home</Link> 
-                            <Link className='Nav_bar__Button' href="/Products"  underline="none">Furniture</Link> 
+                            <Link className='Nav_bar__Button' href="/Furniture"  underline="none">Furniture</Link> 
                             <Link className='Nav_bar__Button'  underline="none">Inspiration</Link> 
                             <Link className='Nav_bar__Button' underline="none">Materials</Link> 
                             <Link className='Nav_bar__Button'  underline="none">About</Link> 
@@ -38,7 +38,7 @@ function Navbar() {
                             
                         </ListItem>
                         <ListItem>
-                            <Link className='Nav_bar__Button' href="/Products"  underline="none">Furniture</Link> 
+                            <Link className='Nav_bar__Button' href="/Furniture"  underline="none">Furniture</Link> 
                         </ListItem>
                         <ListItem>
                             <Link className='Nav_bar__Button' href="/Products"  underline="none">Inspiration</Link> 

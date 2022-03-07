@@ -1,0 +1,5 @@
+.furniture_page__tile:hover{
+    border:solid; 
+    border-width: 1px; 
+    border-color: black;
+}
