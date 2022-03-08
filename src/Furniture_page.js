@@ -4,7 +4,7 @@ import Furniture_tile from './Furniture_tile';
 import "./Furniture_page.css"; 
 
 function Furniture_page() {
-    const item = [{name: "Trudy Dresser", description: "Bunch of bullshit stuff about the item", photo:"/product_photos/untitled9.png"},
+    const item = [{name: "Trudy Dresser", description: "Bunch of bullshit stuff about the item", photo:"/product_photos/19.png"},
         {name: "Trudy Dresser", description: "Bunch of bullshit stuff about the item", photo:"/product_photos/untitled9.png"},{name: "Trudy Dresser", description: "Bunch of bullshit stuff about the item", photo:"/product_photos/untitled9.png"},
         {name: "Trudy Dresser", description: "Bunch of bullshit stuff about the item", photo:"/product_photos/untitled9.png"},{name: "Trudy Dresser", description: "Bunch of bullshit stuff about the item", photo:"/product_photos/untitled9.png"},
         {name: "Trudy Dresser", description: "Bunch of bullshit stuff about the item", photo:"/product_photos/untitled9.png"},{name: "Trudy Dresser", description: "Bunch of bullshit stuff about the item", photo:"/product_photos/untitled9.png"},

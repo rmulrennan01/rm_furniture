@@ -15,6 +15,9 @@ import { BrowserRouter } from "react-router-dom";
 //npm install @material-ui/core
 //npm install @material-ui/icons
 //npm install react-router-dom@6
+//npm install react-material-ui-carousel
+
+
 
 
 
