@@ -1,29 +1,15 @@
-import React from 'react'
+import React from 'react';
+import {useParams} from "react-router-dom";
 import * as Mui from '@material-ui/core';
 import Product_tile from './Product_tile';
 import {Canvas} from '@react-three/fiber'; 
 import {Grid} from '@material-ui/core';
 import Model_loader from './Model_loader';
 import Loader2 from './Loader2'; 
+import "./Product_page.css"; 
 
-
-
-
-function Product_page() {
-   
-      
-
-
-
-
-    return (
-        <div>
-            
-            <Grid container spacing={2}>
-                <Grid item xs= {1}> </Grid>
-                <Grid item xs={7}>
-                    {/*<Model_loader />*/ }
-                    <Canvas>
+/*
+                    /<Canvas>
                         <ambientLight intensity={0.1} />
                         <directionalLight color="red" position={[0, 0, 5]} />
                         <mesh>
@@ -31,10 +17,24 @@ function Product_page() {
                             <meshStandardMaterial />
                         </mesh>
                     </Canvas>
+*/
+
+
+
+function Product_page() {
+
+    let {id} = useParams()
    
-                    
+    return (
+        <div>
+            This is the {id} page. 
+            <Grid container spacing={2}>
+                <Grid item xs= {1}> </Grid>
+                <Grid item xs={6} >
+                    <img className="Product_page__photo" src='/product_photos/untitled46png.png' /> 
+                    {/*<Model_loader />*/ } 
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={4}>
                    
                     <Product_tile 
                         prod_data = {  [["Width:",'50"'],["Depth:",'22"'],["Height:",'30"'],

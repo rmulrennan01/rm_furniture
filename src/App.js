@@ -15,13 +15,20 @@ import Footer from './Footer.js';
 function App() {
 
 
+  /*
+  dynamic routing 
+  <Route path='Furniture/:id' element={<Product_page />} />
+
+  */
+
   return (
     <div>
       <Navbar /> 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/Products" element={<Product_page />} />
+        <Route path="/Furniture/:id" element={<Product_page />} />
         <Route path="/Furniture" element={<Furniture_page />} />
+        <Route path="*" element ={<Home />}/> 
          
 
 

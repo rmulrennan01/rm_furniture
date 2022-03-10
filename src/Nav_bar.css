@@ -1,3 +1,12 @@
+.Nav_bar__Logo{
+  margin-right: 20px !important;
+  color:black !important;
+  font-variant-caps: normal !important;
+  font-size: 12px !important; 
+  
+}
+
+
 .Nav_bar__Button{
   margin-right: 20px !important;
   color:black !important;

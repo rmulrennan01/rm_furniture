@@ -11,7 +11,7 @@ function Navbar() {
             <AppBar className='Nav_bar__AppBar' position='relative'> 
                 <Container maxWidth="md"> 
                     <Toolbar  disableGutters> 
-                    <Avatar variant="rounded" className='Nav_bar__Button'> RM</Avatar>
+                    <Avatar variant="square" className='Nav_bar__Logo'> RMD</Avatar>
 
                     <Hidden xsDown>
                         

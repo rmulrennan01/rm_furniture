@@ -24,7 +24,7 @@ function Product_tile(props) {
 
     return (
         <div>
-            <h2> {productName} </h2> 
+            <h3> {productName} </h3> 
             <div> A modern take on classic mid-centruy design. The Chelsea Dresser puts an emphasis on horizontal lines to balance its taller profile, making it perfect for any sized room. The 1" thick hardwood drawer fronts include a unique slotted groove to eleminate the need for drawer pulls. 
             </div> 
             <br/>
