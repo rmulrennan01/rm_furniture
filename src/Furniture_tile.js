@@ -10,7 +10,7 @@ function Furniture_tile(props) {
     //item = {name: , desrciption:, photo:}
 
     return (
-        <div> 
+        <div onClick={()=>window.location.href="/Furniture/1"}> 
             <Paper> 
             <Grid container> 
                 <Grid item xs={12} >

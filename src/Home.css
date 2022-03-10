@@ -3,10 +3,12 @@
 
 .home__carousel{
     height: 900px; 
+    
 
 }
 
 .home__carousel__image{
-    max-width:100%; 
-    height: auto;
+    max-width:80%; 
+    margin-left: 10%;
+    
 }

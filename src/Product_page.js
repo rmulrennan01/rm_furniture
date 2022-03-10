@@ -3,10 +3,12 @@ import {useParams} from "react-router-dom";
 import * as Mui from '@material-ui/core';
 import Product_tile from './Product_tile';
 import {Canvas} from '@react-three/fiber'; 
-import {Grid} from '@material-ui/core';
+import {Grid, Card} from '@material-ui/core';
 import Model_loader from './Model_loader';
 import Loader2 from './Loader2'; 
 import "./Product_page.css"; 
+import Carousel from 'react-material-ui-carousel'; 
+
 
 /*
                     /<Canvas>
@@ -31,9 +33,12 @@ function Product_page() {
             <Grid container spacing={2}>
                 <Grid item xs= {1}> </Grid>
                 <Grid item xs={6} >
+                    <Card elevation={3}> 
                     <img className="Product_page__photo" src='/product_photos/untitled46png.png' /> 
+                    </Card>
                     {/*<Model_loader />*/ } 
                 </Grid>
+                
                 <Grid item xs={4}>
                    
                     <Product_tile 
@@ -44,12 +49,25 @@ function Product_page() {
                     /> 
                 </Grid>
                 <Grid item xs= {1}> </Grid>
+                
+                <Carousel> 
+
+                </Carousel> 
     
             </Grid>
+            <Grid container spsacing={2}>
+                <Grid item xs= {1}> </Grid>
+                <Grid item xs={6}>
+                    <Carousel className="Product_page__carousel">
+                        <img className="Product_page__photo" src='/product_photos/untitled45png.png' /> 
+                        <img className="Product_page__photo" src='/product_photos/untitled46png.png' /> 
+                        <img className="Product_page__photo" src='/product_photos/untitled47png.png' /> 
+                        <img className="Product_page__photo" src='/product_photos/untitled48.png' /> 
+                        <img className="Product_page__photo" src='/product_photos/untitled38.png' /> 
 
-
-
-
+                    </Carousel>
+                </Grid>
+            </Grid>
         </div>
         
     )
