@@ -8,7 +8,8 @@ import Navbar from './Navbar';
 //Pages
 import Home from "./Home.js"; 
 import Furniture_page from "./Furniture_page.js"; 
-import Product_page from './Product_page.js'
+import Product_page from './Product_page.js';
+import Footer from './Footer.js'; 
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
 
 
       </Routes>
+      <Footer /> 
       
 
 

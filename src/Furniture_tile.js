@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Grid, Button} from '@material-ui/core';
+import {Grid, Button, Paper} from '@material-ui/core';
 import "./Furniture_tile.css"
 
 
@@ -11,6 +11,7 @@ function Furniture_tile(props) {
 
     return (
         <div> 
+            <Paper> 
             <Grid container> 
                 <Grid item xs={12} >
                     <img src={item.photo} alt={item.name} className="furniture_tile__image"/>  
@@ -23,6 +24,7 @@ function Furniture_tile(props) {
                 </Grid> 
             
             </Grid> 
+            </Paper> 
         
            
     
