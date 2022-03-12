@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import {useParams} from "react-router-dom";
 import * as Mui from '@material-ui/core';
 import Product_tile from './Product_tile';
@@ -12,6 +13,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper';
 import 'swiper/css';
 import "swiper/css/pagination";
+import "swiper/css/navigation"; 
 
 
 /*
@@ -28,8 +30,24 @@ import "swiper/css/pagination";
 
 
 function Product_page() {
+    const [activeImage, set_activeImage] = useState('/product_photos/untitled46png.png'); 
+
+    const imageSources = ['/product_photos/untitled45png.png','/product_photos/untitled46png.png','/product_photos/untitled47png.png','/product_photos/untitled48.png','/product_photos/untitled38.png']
 
     let {id} = useParams()
+
+    const addSwiperImages = (item) => {
+        return(
+            <SwiperSlide key={item}>
+                <img className="Product_page__carousel" src={item} onClick={()=>set_activeImage(item)} />
+            </SwiperSlide>
+
+        )
+
+
+    }
+ 
+
    
     return (
         <div>
@@ -38,7 +56,7 @@ function Product_page() {
                 <Grid item xs= {1}> </Grid>
                 <Grid item xs={6} >
                     <Card elevation={3}> 
-                    <img className="Product_page__photo" src='/product_photos/untitled46png.png' /> 
+                    <img className="Product_page__photo" src={activeImage} /> 
                     </Card>
                     {/*<Model_loader />*/ } 
                 </Grid>
@@ -62,17 +80,14 @@ function Product_page() {
                 slidesPerView={3}
                 centeredSlides={true}
                 spaceBetween={30}
+                navigation={true}
                 pagination={{
                 clickable: true,
                 }}
-                modules={[Pagination]}
+                modules={[Pagination, Navigation]}
                
             >
-                <SwiperSlide><img className="Product_page__carousel" src='/product_photos/untitled45png.png' /></SwiperSlide>
-                <SwiperSlide><img className="Product_page__carousel" src='/product_photos/untitled46png.png' /></SwiperSlide>
-                <SwiperSlide><img className="Product_page__carousel" src='/product_photos/untitled47png.png' /></SwiperSlide>
-                <SwiperSlide><img className="Product_page__carousel" src='/product_photos/untitled48.png' /></SwiperSlide>
-                <SwiperSlide><img className="Product_page__carousel" src='/product_photos/untitled38.png' /></SwiperSlide>
+                {imageSources.map(addSwiperImages)}
    
             </Swiper>
             </div>
