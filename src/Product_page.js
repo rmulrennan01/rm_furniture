@@ -14,6 +14,7 @@ import { Navigation, Pagination } from 'swiper';
 import 'swiper/css';
 import "swiper/css/pagination";
 import "swiper/css/navigation"; 
+import { Button } from '@material-ui/core';
 
 
 /*
@@ -39,7 +40,9 @@ function Product_page() {
     const addSwiperImages = (item) => {
         return(
             <SwiperSlide key={item}>
-                <img className="Product_page__carousel" src={item} onClick={()=>set_activeImage(item)} />
+                <Card elevation={3} square={true}> 
+                    <img className="Product_page__carousel" src={item} onClick={()=>set_activeImage(item)} />
+                </Card> 
             </SwiperSlide>
 
         )
@@ -52,16 +55,45 @@ function Product_page() {
     return (
         <div>
             This is the {id} page. 
-            <Grid container spacing={2}>
-                <Grid item xs= {1}> </Grid>
-                <Grid item xs={6} >
-                    <Card elevation={3}> 
-                    <img className="Product_page__photo" src={activeImage} /> 
-                    </Card>
+            <Grid container spacing={4}>
+                
+                <Grid item sm={12} md={6}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}> 
+                            <Card elevation={3} square={true}> 
+                                <img className="Product_page__photo" src={activeImage} /> 
+                            </Card>
+                        </Grid> 
+
+                        <Grid item xs={12}> 
+                            
+                            <Swiper
+                                grabCursor={true}
+                                loop={true}
+                                slidesPerView={3}
+                                centeredSlides={true}
+                                spaceBetween={30}
+                                navigation={true}
+                                autoplay={true}
+                                pagination={{
+                                clickable: true,
+                                }}
+                                modules={[Pagination, Navigation]}
+                            >
+                                {imageSources.map(addSwiperImages)}
+        
+                            </Swiper>                           
+                        </Grid> 
+                        <Grid item xs={12}>
+                            <Button color="primary" variant="contained"> View in 3D </Button>
+
+                        </Grid>
+                    </Grid> 
+                   
                     {/*<Model_loader />*/ } 
                 </Grid>
                 
-                <Grid item xs={4}>
+                <Grid item sm={12} md={6}>
                    
                     <Product_tile 
                         prod_data = {  [["Width:",'50"'],["Depth:",'22"'],["Height:",'30"'],
@@ -75,22 +107,14 @@ function Product_page() {
  
     
             </Grid>
-            <div className="Product_page__slider">
-            <Swiper
-                slidesPerView={3}
-                centeredSlides={true}
-                spaceBetween={30}
-                navigation={true}
-                pagination={{
-                clickable: true,
-                }}
-                modules={[Pagination, Navigation]}
-               
-            >
-                {imageSources.map(addSwiperImages)}
-   
-            </Swiper>
-            </div>
+            
+            <Grid container> 
+                <Grid item xs={1}></Grid>
+                <Grid item xs={6}>
+
+                </Grid>
+            </Grid> 
+            
 
  
             
