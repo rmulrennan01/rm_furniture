@@ -8,6 +8,10 @@ import Model_loader from './Model_loader';
 import Loader2 from './Loader2'; 
 import "./Product_page.css"; 
 import Carousel from 'react-material-ui-carousel'; 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper';
+import 'swiper/css';
+import "swiper/css/pagination";
 
 
 /*
@@ -50,24 +54,32 @@ function Product_page() {
                 </Grid>
                 <Grid item xs= {1}> </Grid>
                 
-                <Carousel> 
-
-                </Carousel> 
+ 
     
             </Grid>
-            <Grid container spsacing={2}>
-                <Grid item xs= {1}> </Grid>
-                <Grid item xs={6}>
-                    <Carousel className="Product_page__carousel">
-                        <img className="Product_page__photo" src='/product_photos/untitled45png.png' /> 
-                        <img className="Product_page__photo" src='/product_photos/untitled46png.png' /> 
-                        <img className="Product_page__photo" src='/product_photos/untitled47png.png' /> 
-                        <img className="Product_page__photo" src='/product_photos/untitled48.png' /> 
-                        <img className="Product_page__photo" src='/product_photos/untitled38.png' /> 
+            <div className="Product_page__slider">
+            <Swiper
+                slidesPerView={3}
+                centeredSlides={true}
+                spaceBetween={30}
+                pagination={{
+                clickable: true,
+                }}
+                modules={[Pagination]}
+               
+            >
+                <SwiperSlide><img className="Product_page__carousel" src='/product_photos/untitled45png.png' /></SwiperSlide>
+                <SwiperSlide><img className="Product_page__carousel" src='/product_photos/untitled46png.png' /></SwiperSlide>
+                <SwiperSlide><img className="Product_page__carousel" src='/product_photos/untitled47png.png' /></SwiperSlide>
+                <SwiperSlide><img className="Product_page__carousel" src='/product_photos/untitled48.png' /></SwiperSlide>
+                <SwiperSlide><img className="Product_page__carousel" src='/product_photos/untitled38.png' /></SwiperSlide>
+   
+            </Swiper>
+            </div>
 
-                    </Carousel>
-                </Grid>
-            </Grid>
+ 
+            
+
         </div>
         
     )

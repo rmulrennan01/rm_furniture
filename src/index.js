@@ -17,6 +17,8 @@ import { BrowserRouter } from "react-router-dom";
 //npm install react-router-dom@6
 //npm install react-material-ui-carousel
 
+//npm install swiper OR npm i swiper
+
 
 
 

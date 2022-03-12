@@ -5,5 +5,15 @@
 
 .Product_page__carousel{
 
-    height: 200px; 
+    
+    height: 100%;
+    width: 100%; 
+}
+
+
+.Product_page__slider{
+    width:50%; 
+    height: auto; 
+    padding: 10px; 
+    z-index: 0;
 }
