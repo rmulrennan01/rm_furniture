@@ -114,6 +114,13 @@ function Product_page() {
 
                 </Grid>
             </Grid> 
+            <div className='Product_page__model'> 
+                 <Model_loader /> 
+            </div> 
+
+
+
+            
             
 
  
