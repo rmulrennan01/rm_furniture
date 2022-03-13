@@ -4,6 +4,7 @@ import {Container} from '@material-ui/core';
 import {Paper} from '@material-ui/core'; 
 import Carousel from 'react-material-ui-carousel'; 
 import './Home.css';
+import Scroller from './Scroller';
 
 
 
@@ -24,6 +25,9 @@ function Home() {
     return (
       <div className="home">
           Observe! My stuff!
+          <div className='home__scroller'>
+           <Scroller /> 
+          </div> 
       
           
           <Carousel className="home__carousel"  animation="slide" indicators="true" navButtonsAlwaysVisible="false" swipe="true" duration="600">

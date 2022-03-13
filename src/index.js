@@ -12,6 +12,7 @@ import { BrowserRouter } from "react-router-dom";
 //INSTALL DEPENDENCIES 
 //npm install react
 //npm install three @react-three/fiber
+//npm install @react-three/drei
 //npm install @material-ui/core
 //npm install @material-ui/icons
 //npm install react-router-dom@6

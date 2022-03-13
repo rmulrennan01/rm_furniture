@@ -14,7 +14,7 @@ import { Suspense } from "react";
 import {Canvas, useThree} from '@react-three/fiber'; 
 
 const Model = () => {
-  const gltf = useLoader(GLTFLoader, "/models/dresser3.gltf");
+  const gltf = useLoader(GLTFLoader, "/models/dresser4.gltf");
   return (
     <>
       <primitive object={gltf.scene} scale={1.0}  />
@@ -47,6 +47,7 @@ export default function Model_loader() {
         <Model />
         <CameraController /> 
         <ambientLight /> 
+        
        
       </Suspense>
         

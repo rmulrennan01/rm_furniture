@@ -12,3 +12,8 @@
     margin-left: 10%;
     
 }
+
+.home__scroller{
+    height: 900px; 
+    width: 900px; 
+}
