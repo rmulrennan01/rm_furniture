@@ -30,9 +30,6 @@ function Home() {
           </div> 
       
           
-          <Carousel className="home__carousel"  animation="slide" indicators="true" navButtonsAlwaysVisible="false" swipe="true" duration="600">
-            {pic.map(addImages)}
-          </Carousel>
           
         
            
