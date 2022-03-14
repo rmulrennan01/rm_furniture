@@ -10,29 +10,40 @@ import { isVisible } from '@testing-library/user-event/dist/utils';
 const imageSources = ['/product_photos/untitled45png.png','/product_photos/untitled46png.png','/product_photos/untitled47png.png','/product_photos/untitled48.png','/product_photos/untitled38.png']
 
 //INDIVIDUAL IMAGE TILE
-function Image_Tile(props){
+function Image_Tile({url, scale, ...props}){
     const inView = useRef(false); 
 
-    //const ref = useIntersect((isVisible) => (inView.current=isVisible)); 
-    const ref = useIntersect((visible) => console.log('object is visible', visible)); 
+    const ref = useIntersect((visible) => (inView.current=visible)); //useIntersect can check if object is in vew. 
+    //const ref = useIntersect((visible) => console.log('object is visible', visible)); 
+
+    const { height } = useThree((state) => state.viewport); 
 
     useFrame((state,delta) => {
+        ref.current.position.y = THREE.MathUtils.damp(ref.current.position.y, inView.current ? 0 : -height / 2 + 1, 4, delta)
+        ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 1.5, 4, delta)
         
 
     })
 
     return(
-        <Image  ref={ref} scale={props.scale} url={props.url} /> 
+        <group {...props}> 
+        <Image  ref={ref} scale={scale} url={url} /> 
+        </group> 
     )
 }
 
 
 //COLLECTION OF IMAGE TILES
-function Image_Group(props){
+function Image_Group(){
+    const { width: w, height: h } = useThree((state) => state.viewport)
+
     return(
         <Scroll> 
-            <Image_Tile url={'/product_photos/untitled45png.png'} scale={[4,4,1]} /> 
-
+            <Image_Tile url={imageSources[0]} scale={[w / 3, w / 3, 1]} position={[-w / 6, 0, 0]} /> 
+           
+            <Image_Tile url={imageSources[1]} scale={[w / 3, w / 3, 1]} position={[w / 30, -h, 0]} /> 
+            <Image_Tile url={imageSources[2]} scale={[w / 3, w / 3, 1]} position={[-w / 4, -h * 1, 0]} /> 
+            <Image_Tile url={imageSources[3]} scale={[w / 3, w / 3, 1]} position={[w / 4, -h * 1.2, 0]} /> 
         </Scroll> 
     )
 
@@ -52,7 +63,7 @@ function Scroller2() {
 
         <ScrollControls damping={4} pages={5}> 
             <Image_Group/> 
-            <Scroll html> 
+            <Scroll html sytle={{width:'100%'}}> 
                 <h1> Modern</h1> 
                 <h1 style={{ position: 'absolute', top: '180vh', left: '10vw' }}> Sustainable </h1>
                 <h1 style={{ position: 'absolute', top: '20vh', left: '10vw' }}> Clean</h1>
