@@ -4,7 +4,7 @@ import {Container} from '@material-ui/core';
 import {Paper} from '@material-ui/core'; 
 import Carousel from 'react-material-ui-carousel'; 
 import './Home.css';
-import Scroller from './Scroller';
+import Scroller2 from './Scroller2';
 
 
 
@@ -26,7 +26,7 @@ function Home() {
       <div className="home">
           Observe! My stuff!
           <div className='home__scroller'>
-           <Scroller /> 
+           <Scroller2 /> 
           </div> 
       
           
