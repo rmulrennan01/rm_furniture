@@ -20,7 +20,7 @@ function Image_Tile({url, scale, ...props}){
 
     useFrame((state,delta) => {
         ref.current.position.y = THREE.MathUtils.damp(ref.current.position.y, inView.current ? 0 : -height / 2 + 1, 4, delta)
-        ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 1.5, 4, delta)
+        ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta)
         
 
     })
@@ -67,6 +67,7 @@ function Scroller2() {
                 <h1> Modern</h1> 
                 <h1 style={{ position: 'absolute', top: '180vh', left: '10vw' }}> Sustainable </h1>
                 <h1 style={{ position: 'absolute', top: '20vh', left: '10vw' }}> Clean</h1>
+                <h1 style={{ position: 'absolute', top: '10vh', left: '10vw' }}> Minimalist </h1>
             </Scroll> 
  
 
