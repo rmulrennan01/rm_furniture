@@ -16,23 +16,23 @@ function Image_Tile(props){
     const inView = useRef(false); 
     const group = useRef(); 
     const data = useScroll(); 
-    //const vis_ref = useIntersect((visible) => (inView.current=visible)); //useIntersect can check if object is in vew. 
+    const ref = useIntersect((visible) => (inView.current=visible)); //useIntersect can check if object is in vew. 
     //const ref = useIntersect((visible) => console.log('object is visible', visible)); 
-    const ref = useRef(); 
+    //const ref = useRef(); 
 //    const { height } = useThree((state) => state.viewport); 
     const { width: w, height: h } = useThree((state) => state.viewport);
     
 
     useFrame((state,delta) => {
         //ref.current.position.y = THREE.MathUtils.damp(ref.current.position.y, inView.current ? 0 : -h / 2 + 1, 4, delta)
-        //ref.current.position.x = THREE.MathUtils.damp(ref.current.position.x, inView.current ? 0 : w/2, 4, delta)
+        ref.current.position.x = THREE.MathUtils.damp(ref.current.position.x, inView.current ? 0 : w/2, 4, delta)
         //ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
         //ref.current.position.z = THREE.MathUtils.damp(ref.current.position.z, Math.max(0, data.delta * 50), 4, delta);
         //ref.current.rotation.y = THREE.MathUtils.damp(ref.current.rotation.y, inView.current ? 0 : 10, 2, delta) 
         //ref.current.rotation.z = THREE.MathUtils.damp(ref.current.rotation.y, inView.current ? 0 : 90, 4, delta) 
         //ref.current.material.grayscale = THREE.MathUtils.damp(ref.current.material.grayscale, Math.max(0, 1 - data.delta * 1000), 4, delta); 
         group.current.position.z = THREE.MathUtils.damp(group.current.position.z, Math.max(0, data.delta * 50), 4, delta);
-        //ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
+        ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
     })
     return(
         <group ref={group}> 
@@ -52,8 +52,8 @@ function Image_Trio({m=0.1, urls, ...props}){
         <Image_Tile position={[0,width * adjFactor, 1]} scale={[width * adjFactor - m * 2, 5, 1]} url={urls[2]} />
           */ }
             <Image_Tile position={[0,-width/8, -1]} scale={[width/5, width/5, 1]} url={urls[0]} />
-            <Image_Tile position={[0, 0, 0]} scale={[width/5, width/5, 1]} url={urls[1]} />
-            <Image_Tile position={[0,width/8, 1]} scale={[width/5, width/5, 1]} url={urls[2]} />
+            <Image_Tile position={[0, 0, 1]} scale={[width/5, width/5, 1]} url={urls[1]} />
+            <Image_Tile position={[0,width/8, 0]} scale={[width/5, width/5, 1]} url={urls[2]} />
 
       </group> 
     )
