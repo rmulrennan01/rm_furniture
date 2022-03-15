@@ -48,9 +48,40 @@ function Image_Group(){
             <Image_Tile url={imageSources[1]} scale={[w / 3, w / 3, 1]} position={[w / 30, -5, 0]} /> 
             <Image_Tile url={imageSources[2]} scale={[w / 2, w / 2, 1]} position={[-w / 4, -h * 1, 0]} /> 
             <Image_Tile url={imageSources[3]} scale={[w / 2, w / 2, 1]} position={[w / 4, -h * 1.2, 0]} /> 
+
+
         </Scroll> 
     )
 
+}
+
+
+//INDIVIDUAL PHRASE TILE
+function Phrase_Tile({phrase, scale, ...props}){
+    const inView = useRef(false); 
+
+    const ref = useIntersect((visible) => (inView.current=visible)); //useIntersect can check if object is in vew. 
+    //const ref = useIntersect((visible) => console.log('object is visible', visible)); 
+
+//    const { height } = useThree((state) => state.viewport); 
+    const { width: w, height: h } = useThree((state) => state.viewport)
+
+
+    useFrame((state,delta) => {
+        ref.current.position.y = THREE.MathUtils.damp(ref.current.position.y, inView.current ? 0 : -h / 2 + 1, 4, delta)
+        ref.current.position.x = THREE.MathUtils.damp(ref.current.position.x, inView.current ? 0 : w/2, 4, delta)
+        //ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta)
+        //ref.current.rotation.y = THREE.MathUtils.damp(ref.current.rotation.y, inView.current ? 0 : 10, 2, delta) 
+        //ref.current.rotation.z = THREE.MathUtils.damp(ref.current.rotation.y, inView.current ? 0 : 90, 4, delta) 
+        
+
+    })
+
+    return(
+        <group {...props}> 
+                <h1> {phrase}</h1> 
+        </group> 
+    )
 }
 
 
