@@ -4,6 +4,8 @@ import { useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useIntersect, Image, ScrollControls, Scroll, useScroll } from '@react-three/drei';
 import { isVisible } from '@testing-library/user-event/dist/utils';
+import { PerspectiveCamera } from 'three';
+import { Camera } from 'three';
 
 
 
@@ -31,7 +33,7 @@ function Image_Tile(props){
         //ref.current.rotation.y = THREE.MathUtils.damp(ref.current.rotation.y, inView.current ? 0 : 10, 2, delta) 
         //ref.current.rotation.z = THREE.MathUtils.damp(ref.current.rotation.y, inView.current ? 0 : 90, 4, delta) 
         //ref.current.material.grayscale = THREE.MathUtils.damp(ref.current.material.grayscale, Math.max(0, 1 - data.delta * 1000), 4, delta); 
-        group.current.position.z = THREE.MathUtils.damp(group.current.position.z, Math.max(0, data.delta * 50), 4, delta);
+        group.current.position.z = THREE.MathUtils.damp(group.current.position.z, Math.max(0, data.delta * 500), 10, delta);
         ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
         //console.log(ref);
         //console.log(data); 
@@ -40,8 +42,7 @@ function Image_Tile(props){
     return(
         <group ref={group}> 
             <Image  ref={ref} {...props} /> 
-            {console.log("ref:", ref)}
-            {console.log("group:", group)}
+            {console.log("viewport width at image level", w)}
         </group> 
     )
 }
@@ -61,6 +62,7 @@ function Image_Trio({urls, spacing, ...props}){
             <Image_Tile position={[0,-width*spacing, -1]} scale={[width/5, width/5, 1]} url={urls[0]} />
             <Image_Tile position={[0, 0, 1]} scale={[width/5, width/5, 1]} url={urls[1]} />
             <Image_Tile position={[0,width*spacing, 0]} scale={[width/5, width/5, 1]} url={urls[2]} />
+            {console.log("viewport width at group level", width)}
 
       </group> 
     )
@@ -93,14 +95,16 @@ function Image_Group({xOffset, yOffset, spacing, sources}){
 
 function Scroller2() {
   return (
-    <Canvas dpr={[1, 1.5]}> 
+    <Canvas dpr={[1, 1.5]} camera={{fov: 20, position: [0,0,5]}}> 
         <Suspense fallback={null}>
+      
         <color attach="background" args={['#f0f0f0']} />
 
         <ScrollControls damping={2} pages={4} distance={4} >   
             <Scroll> 
-                <Image_Group xOffset={0} yOffset={0} spacing={0.125} sources={imageSources}/> 
-                <Image_Group xOffset={0.4} yOffset={0} spacing={0.3} sources={imageSources}/> 
+                <Image_Group xOffset={0} yOffset={0} spacing={0.2} sources={imageSources}/> 
+                <Image_Group xOffset={.35} yOffset={-0.15} spacing={0.2} sources={imageSources}/> 
+                <Image_Group xOffset={-.35} yOffset={-0.15} spacing={0.2} sources={imageSources}/> 
 
               
             </Scroll> 
