@@ -25,7 +25,7 @@ function Image_Tile(props){
 
     useFrame((state, delta) => {
         //ref.current.position.y = THREE.MathUtils.damp(ref.current.position.y, inView.current ? 0 : -h / 2 + 1, 4, delta)
-        ref.current.position.x = THREE.MathUtils.damp(ref.current.position.x, inView.current ? 0 : w/2, 4, delta)
+       // ref.current.position.x = THREE.MathUtils.damp(ref.current.position.x, inView.current ? 0 : w/2, 4, delta)
         //ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
         //ref.current.position.z = THREE.MathUtils.damp(ref.current.position.z, Math.max(0, data.delta * 50), 4, delta);
         //ref.current.rotation.y = THREE.MathUtils.damp(ref.current.rotation.y, inView.current ? 0 : 10, 2, delta) 
@@ -33,16 +33,22 @@ function Image_Tile(props){
         //ref.current.material.grayscale = THREE.MathUtils.damp(ref.current.material.grayscale, Math.max(0, 1 - data.delta * 1000), 4, delta); 
         group.current.position.z = THREE.MathUtils.damp(group.current.position.z, Math.max(0, data.delta * 50), 4, delta);
         ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
-        {console.log(ref)};
+        //console.log(ref);
+        //console.log(data); 
+        //console.log(group);  
     })
     return(
         <group ref={group}> 
             <Image  ref={ref} {...props} /> 
+            {console.log("ref:", ref)}
+            {console.log("group:", group)}
         </group> 
     )
 }
 
-function Image_Trio({m=0.1, urls, ...props}){
+
+
+function Image_Trio({urls, spacing, ...props}){
     const { width } = useThree((state) => state.viewport)
     const adjFactor = width < 10 ? 1.5 / 3 : 1 / 3
     return (
@@ -52,36 +58,38 @@ function Image_Trio({m=0.1, urls, ...props}){
         <Image_Tile position={[0, 0, 0]} scale={[width * adjFactor - m * 2, 5, 1]} url={urls[1]} />
         <Image_Tile position={[0,width * adjFactor, 1]} scale={[width * adjFactor - m * 2, 5, 1]} url={urls[2]} />
           */ }
-            <Image_Tile position={[0,-width/8, -1]} scale={[width/5, width/5, 1]} url={urls[0]} />
+            <Image_Tile position={[0,-width*spacing, -1]} scale={[width/5, width/5, 1]} url={urls[0]} />
             <Image_Tile position={[0, 0, 1]} scale={[width/5, width/5, 1]} url={urls[1]} />
-            <Image_Tile position={[0,width/8, 0]} scale={[width/5, width/5, 1]} url={urls[2]} />
+            <Image_Tile position={[0,width*spacing, 0]} scale={[width/5, width/5, 1]} url={urls[2]} />
 
       </group> 
     )
 }
 
 
-//COMBINATION OF ALL TRIOS
-function Image_Group(){
+
+function Image_Group({xOffset, yOffset, spacing, sources}){
     const { width: w, height: h } = useThree((state) => state.viewport)
-    const xPosFactor = 1; 
-    const yPosFactor = 2; 
+  
     
     return(
         <> 
-            <Image_Trio position={[w * 0, 0, 0]} urls={[imageSources[0], imageSources[1], imageSources[3]]}/> 
+            <Image_Trio position={[w*xOffset, h*yOffset, 0]} urls={[sources[0], sources[1], sources[3]]} spacing={spacing}/> 
       
 
 
         </> 
     )
-
 }
+
 
 
 //INDIVIDUAL PHRASE TILE
 
 //<Canvas orthographic camera={{ zoom: 50 }} gl={{ alpha: false, antialias: true, stencil: false, depth: false }} dpr={[1, 1.5]}> 
+
+//dampening: higher is faster
+//distance: scroll bar travel
 
 function Scroller2() {
   return (
@@ -89,9 +97,11 @@ function Scroller2() {
         <Suspense fallback={null}>
         <color attach="background" args={['#f0f0f0']} />
 
-        <ScrollControls damping={4} pages={4} distance={1} > 
+        <ScrollControls damping={2} pages={4} distance={4} >   
             <Scroll> 
-                <Image_Group/> 
+                <Image_Group xOffset={0} yOffset={0} spacing={0.125} sources={imageSources}/> 
+                <Image_Group xOffset={0.4} yOffset={0} spacing={0.3} sources={imageSources}/> 
+
               
             </Scroll> 
             <Scroll html sytle={{width:'100%'}}> 
