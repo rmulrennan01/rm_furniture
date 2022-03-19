@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import * as THREE from 'three';
 import { useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useIntersect, Image, ScrollControls, Scroll, useScroll, Html } from '@react-three/drei';
+import { useIntersect, Image, ScrollControls, Scroll, useScroll, Line } from '@react-three/drei';
 import { isVisible } from '@testing-library/user-event/dist/utils';
 import { PerspectiveCamera } from 'three';
 import { Camera } from 'three';
@@ -136,6 +136,35 @@ function Scroller2() {
     const ref = useRef(); 
     //const { height, width } = useThree((state) => state.viewport); 
 
+    const buildPoints = () => {
+        let list = []; 
+        for (let i = -2; i<=2; i=i+.01){
+            list.push([i,0,1])
+        }
+
+        console.log(list); 
+        return list; 
+
+
+    } ;
+
+
+    const buildPoints2 = () => {
+        let list = []; 
+        for (let i = -2; i<=2; i=i+.01){
+            list.push([0,i,1])
+        }
+
+        console.log(list); 
+        return list; 
+
+
+    } ;
+
+    const nums = buildPoints(); 
+    const nums2 = buildPoints2();
+
+
 
 
 
@@ -155,7 +184,10 @@ function Scroller2() {
                  
                {/* <Fixed_Image_Tile  url={imageSources[4]} xPercentage={0} yPercentage={.875} zInd={0} scaleRatio={.25} />  */}
                 <Image ref={ref} url={imageSources[6]} position={[0,-1.5,1]}/> 
-             
+                <Line points = {nums} lineWidth={1} color={"black"}   />
+                <Line points = {nums2} lineWidth={.5} color={"black"}   />
+                
+                {buildPoints()}
 
                 
 
