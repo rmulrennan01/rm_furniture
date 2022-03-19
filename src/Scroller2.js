@@ -6,7 +6,7 @@ import { useIntersect, Image, ScrollControls, Scroll, useScroll, Html } from '@r
 import { isVisible } from '@testing-library/user-event/dist/utils';
 import { PerspectiveCamera } from 'three';
 import { Camera } from 'three';
-import { ContactsOutlined } from '@material-ui/icons';
+import { ContactsOutlined, GroupOutlined } from '@material-ui/icons';
 
 
 
@@ -27,22 +27,22 @@ function Image_Tile(props){
     
 
     useFrame((state, delta) => {
-        //ref.current.position.y = THREE.MathUtils.damp(ref.current.position.y, inView.current ? 0 : -h / 2 + 1, 4, delta)
-       // ref.current.position.x = THREE.MathUtils.damp(ref.current.position.x, inView.current ? 0 : w/2, 4, delta)
+   
+        //ref.current.material.grayscale = THREE.MathUtils.damp(ref.current.material.grayscale, Math.max(0, 1 - data.delta * 2000), 4, delta); 
+        //group.current.position.z = THREE.MathUtils.damp(group.current.position.z, Math.max(0, data.delta * 500), 10, delta);
         //ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
-        //ref.current.position.z = THREE.MathUtils.damp(ref.current.position.z, Math.max(0, data.delta * 50), 4, delta);
-        //ref.current.rotation.y = THREE.MathUtils.damp(ref.current.rotation.y, inView.current ? 0 : 10, 2, delta) 
-        //ref.current.rotation.z = THREE.MathUtils.damp(ref.current.rotation.y, inView.current ? 0 : 90, 4, delta) 
-        ref.current.material.grayscale = THREE.MathUtils.damp(ref.current.material.grayscale, Math.max(0, 1 - data.delta * 2000), 4, delta); 
-        group.current.position.z = THREE.MathUtils.damp(group.current.position.z, Math.max(0, data.delta * 500), 10, delta);
-        //group.current.position.z = THREE.MathUtils.damp(group.current.position.z, Math.min(-data.delta * 500,0), 10, delta);
-        ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
-        //console.log(ref);
-        //console.log(data); 
-        //console.log(group);  
-        //console.log("useScroll offset: ", data.offset); 
-        //console.log("useScroll delta: ", data.delta); 
+
+        const rInfo = data.range(0,.5); 
+       // console.log("This is the scroll info: ", rInfo);
+       if(rInfo < 1){
+          // ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 1, 1, delta);
+           ref.current.material.zoom = 1 + rInfo; 
+       }
+       
+        
+
     })
+    
     return(
         <group ref={group}> 
             <Image  ref={ref} {...props} onPointerEnter={(e)=> console.log(ref.current.position.x, ref.current.position.y, ref.current.position.z)}/> 
@@ -54,19 +54,39 @@ function Image_Tile(props){
 
 
 function Image_Trio({urls, spacing, ...props}){
-    const { width } = useThree((state) => state.viewport)
-    const adjFactor = width < 10 ? 1.5 / 3 : 1 / 3
+    const { height:h, width: w } = useThree((state) => state.viewport)
+    const adjFactor = w < 10 ? 1.5 / 3 : 1 / 3
+    const group = useRef(); 
+    const data = useScroll(); 
+    
+    useFrame((state, delta) => {
+        const rInfo = data.range(0,.5); 
+                
+        if (rInfo < 1){
+            //group.current.position.y = THREE.MathUtils.damp(group.current.position.y, (-w / 7) * rInfo, 4, delta); 
+            group.current.position.y = -data.offset * h; 
+            //console.log(data); 
+            //group.current.position.y = -1; 
+            //console.log(group.current.position.y); 
+            
+
+        }; 
+        
+        
+    })
+
+    
     return (
-      <group {...props}>
+      <group ref={group} {...props}>
           {/*
         <Image_Tile position={[0,-width * adjFactor, -1]} scale={[width * adjFactor - m * 2, 5, 1]} url={urls[0]} />
         <Image_Tile position={[0, 0, 0]} scale={[width * adjFactor - m * 2, 5, 1]} url={urls[1]} />
         <Image_Tile position={[0,width * adjFactor, 1]} scale={[width * adjFactor - m * 2, 5, 1]} url={urls[2]} />
           */ }
-            <Image_Tile position={[0,-adjFactor*spacing, -1]} scale={[width/5, width/5, 1]} url={urls[0]} />
-            <Image_Tile position={[0, 0, 0]} scale={[width/5, width/5, 1]} url={urls[1]} />
-            <Image_Tile position={[0,adjFactor*spacing, 1]} scale={[width/5, width/5, 1]} url={urls[2]} />
-            {console.log("viewport width at group level", width)}
+            <Image_Tile position={[0,-adjFactor*spacing, -1]} scale={[w/5, w/5, 1]} url={urls[0]} />
+            <Image_Tile position={[0, 0, 0]} scale={[w/5, w/5, 1]} url={urls[1]} />
+            <Image_Tile position={[0,adjFactor*spacing, 1]} scale={[w/5, w/5, 1]} url={urls[2]} />
+           
 
       </group> 
     )
@@ -81,7 +101,7 @@ function Image_Group({xOffset, yOffset, spacing, sources}){
     return(
         <> 
             <Image_Trio position={[w*xOffset, h*yOffset, 0]} urls={[sources[0], sources[1], sources[3]]} spacing={spacing}/> 
-            {console.log(w,h)}
+            
       
 
 
@@ -91,11 +111,13 @@ function Image_Group({xOffset, yOffset, spacing, sources}){
 
 function Fixed_Image_Tile({url, xPercentage, yPercentage, zInd, scaleRatio, ...props}){
     const {width:w, height: h } = useThree((state) => state.viewport);
-    console.log("Viewport width, height is: ", w,h); 
+    
     
     return (
       <group {...props}>
+            
             <Image_Tile position={[w*xPercentage,-h*yPercentage-(w*scaleRatio/2), zInd]} scale={[w*scaleRatio, w*scaleRatio, 1]} url={url} />
+            
       </group> 
     )
 
@@ -103,51 +125,6 @@ function Fixed_Image_Tile({url, xPercentage, yPercentage, zInd, scaleRatio, ...p
 }
 
 
-function Display_Words({content, xPercentage, yPercentage, zInd, scaleRatio}){
-    const inView = useRef(false); 
-    const group = useRef(); 
-    const data = useScroll(); 
-    const ref = useIntersect((visible) => (inView.current=visible)); //useIntersect can check if object is in vew. 
-
-    const { width: w, height: h } = useThree((state) => state.viewport);
-    
-
-    useFrame((state, delta) => {
-        //ref.current.position.z = THREE.MathUtils.damp(ref.current.position.z, inView.current ? 0 : 4, 4, delta)
-        //group.current.position.x = THREE.MathUtils.damp(group.current.position.x, inView.current ? 0 : w/2, 4, delta)
-        //ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
-        //ref.current.position.z = THREE.MathUtils.damp(ref.current.position.z, Math.max(0, data.delta * 50), 4, delta);
-        //ref.current.rotation.y = THREE.MathUtils.damp(ref.current.rotation.y, inView.current ? 0 : 10, 2, delta) 
-        //ref.current.rotation.z = THREE.MathUtils.damp(ref.current.rotation.y, inView.current ? 0 : 90, 4, delta) 
-        //ref.current.material.grayscale = THREE.MathUtils.damp(ref.current.material.grayscale, Math.max(0, 1 - data.delta * 2000), 4, delta); 
-        //group.current.position.z = THREE.MathUtils.damp(group.current.position.z, Math.max(0, data.delta * 500), 10, delta);
-        //group.current.position.z = THREE.MathUtils.damp(group.current.position.z, Math.min(-data.delta * 500,0), 10, delta);
-       // ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
-        //console.log(ref);
-        //console.log(data); 
-        //console.log("useScroll offset: ", data.offset); 
-        //console.log("useScroll delta: ", data.delta); 
-       
-    }); 
-   
-    
-    return (
-          
-           <scroll html   ref={group} position={[w*xPercentage,-h*yPercentage, zInd]} scale={[w*scaleRatio, w*scaleRatio, 1]}> 
-           
-            <h1 ref={ref}> 
-
-                {content}
-            </h1>
-            </scroll> 
-            
-
-
-        
-    ); 
-
-
-}
 
 
 //<Canvas orthographic camera={{ zoom: 50 }} gl={{ alpha: false, antialias: true, stencil: false, depth: false }} dpr={[1, 1.5]}> 
@@ -156,6 +133,9 @@ function Display_Words({content, xPercentage, yPercentage, zInd, scaleRatio}){
 //distance: scroll bar travel
 
 function Scroller2() {
+    const ref = useRef(); 
+    //const { height, width } = useThree((state) => state.viewport); 
+
 
 
 
@@ -167,13 +147,15 @@ function Scroller2() {
       
         <color attach="background" args={['#f0f0f0']} />
 
-        <ScrollControls damping={2} pages={4} distance={4} >   
+        <ScrollControls damping={2} pages={2} distance={4} >   
             <Scroll> 
                 <Image_Group xOffset={0} yOffset={0} spacing={0.2} sources={imageSources}/> 
                 <Image_Group xOffset={.35} yOffset={-0.45} spacing={0.2} sources={imageSources}/> 
                 <Image_Group xOffset={-.35} yOffset={-0.45} spacing={0.2} sources={imageSources}/> 
                  
-                <Fixed_Image_Tile  url={imageSources[4]} xPercentage={0} yPercentage={1} zInd={0} scaleRatio={.5} />  
+               {/* <Fixed_Image_Tile  url={imageSources[4]} xPercentage={0} yPercentage={.875} zInd={0} scaleRatio={.25} />  */}
+                <Image ref={ref} url={imageSources[6]} position={[0,-1.5,1]}/> 
+             
 
                 
 
