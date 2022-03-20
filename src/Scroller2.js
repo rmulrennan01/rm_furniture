@@ -179,6 +179,56 @@ function Fixed_Image_Tile({url, xPercentage, yPercentage, zInd, scaleRatio, ...p
 
 
 
+function Grid_Helper(){
+    
+
+    const buildPointsX = () => {
+        let listOverall = []; 
+       
+        for (let i = -2; i<=2; i+=1){
+            let subList = []; 
+            for (let k = -2; k<=2; k+=.01){
+                subList.push([k,i,1])
+            }
+            listOverall.push(subList); 
+        }
+        return listOverall; 
+    } ;
+
+    const buildPointsY = () => {
+        let listOverall = []; 
+       
+        for (let i = -2; i<=2; i+=1){
+            let subList = []; 
+            for (let k = -2; k<=2; k+=.01){
+                subList.push([i,k,1])
+            }
+            listOverall.push(subList); 
+        }
+        return listOverall; 
+    } ;
+
+    const xLines = buildPointsX(); 
+    const yLines = buildPointsY(); 
+
+
+    const drawLines = (item) => {
+        return(
+            <Line points = {item} lineWidht = {1} color={"black"} /> 
+        )
+    }
+
+    return(
+        <>
+            {xLines.map(drawLines)}
+            {yLines.map(drawLines)}
+        </> 
+        
+
+    )
+}
+
+
 
 //<Canvas orthographic camera={{ zoom: 50 }} gl={{ alpha: false, antialias: true, stencil: false, depth: false }} dpr={[1, 1.5]}> 
 
@@ -237,8 +287,8 @@ function Scroller2() {
                  
                {/* <Fixed_Image_Tile  url={imageSources[4]} xPercentage={0} yPercentage={.875} zInd={0} scaleRatio={.25} />  */}
                 <Image ref={ref} url={imageSources[6]} position={[0,-1.5,1]}/> 
-                <Line points = {nums} lineWidth={1} color={"black"}   />
-                <Line points = {nums2} lineWidth={.5} color={"black"}   />
+           
+                <Grid_Helper /> 
                 <FixedImageSection 
                     url = {imageSources[1]}
                     x_position_ratio ={1}
