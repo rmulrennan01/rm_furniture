@@ -93,6 +93,66 @@ function Image_Trio({urls, spacing, ...props}){
 }
 
 
+/*
+    url = image to be placed in the group
+    x_position_ratio = 0 - 1 ratio value representing x position on scroll page
+    y_position_ratio = 0 - 1 ratio value representing x position on scroll page
+    page = identifies which page the image will go
+    scale = default is 1, otherwise impacts size of image 
+    zoomFactor = zoom when scrolling; negative will zoom out; positive will zooom in
+    x_movement = positive float that impacts how the image moves when scrolling; negative results in left movement; positive results in right movement
+    y_movement = positive float that impacts how the image moves when scrolling; negative results in downward movement; positive results in upward movement
+    fixed_range = float between 0 & 1 that indicates cutoff point for where the image will no scroll out of view.
+
+
+*/
+
+function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, page, x_scale, y_scale, zoomFactor, x_movement, y_movement, fixed_range_start, fixed_range_end}){
+    const ref = useRef(); 
+    //const group_ref = useRef();
+    const scroll_data = useScroll(); 
+    const { width: w, height: h } = useThree((state) => state.viewport);
+    const img_height = x_scale * w; 
+    const img_width = y_scale * w; 
+    const pos = [-1+x_position_ratio, -1+y_position_ratio + (page-1), z_index ]
+
+
+
+    useFrame((state, delta) =>{
+        //ref.current.material.grayscale = THREE.MathUtils.damp(ref.current.material.grayscale, Math.max(0, 1 - data.delta * 2000), 4, delta); 
+        //group.current.position.z = THREE.MathUtils.damp(group.current.position.z, Math.max(0, data.delta * 500), 10, delta);
+        //ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
+
+        const rInfo = scroll_data.range(fixed_range_start,fixed_range_end); 
+        // console.log("This is the scroll info: ", rInfo);
+        if(rInfo < 1){
+            // ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 1, 1, delta);
+            ref.current.material.zoom = (1 + rInfo) * zoomFactor; 
+            ref.current.position.y = -scroll_data.offset * h;
+        }
+       // ref.current.position.x = THREE.MathUtils.damp(ref.current.position.x, Math.max(0, scroll_data.delta * 500), 10, delta);
+        ref.current.position.x += x_movement* scroll_data.offset;
+        console.log("Offset: ", scroll_data.offset);  
+        ref.current.position.y += y_movement*scroll_data.delta; 
+       
+    }); 
+
+
+
+    return (
+      
+        <Image 
+            ref={ref} 
+            url={url} 
+            position={pos}
+            scale = {[x_scale*w, y_scale*w, 1]}
+        /> 
+        
+    )
+
+}
+
+
 
 function Image_Group({xOffset, yOffset, spacing, sources}){
     const { width: w, height: h } = useThree((state) => state.viewport)
@@ -116,7 +176,10 @@ function Fixed_Image_Tile({url, xPercentage, yPercentage, zInd, scaleRatio, ...p
     return (
       <group {...props}>
             
-            <Image_Tile position={[w*xPercentage,-h*yPercentage-(w*scaleRatio/2), zInd]} scale={[w*scaleRatio, w*scaleRatio, 1]} url={url} />
+            <Image_Tile 
+                position={[w*xPercentage,-h*yPercentage-(w*scaleRatio/2), zInd]} 
+                scale={[w*scaleRatio, w*scaleRatio, 1]} url={url} 
+            />
             
       </group> 
     )
@@ -166,7 +229,7 @@ function Scroller2() {
 
 
 
-
+//ImageSection({url, x_position_ratio, y_position_ratio, z_index, page, x_scale, y_scale, zoomFactor, x_movement, y_movement, fixed_range})
 
     
   return (
@@ -186,8 +249,24 @@ function Scroller2() {
                 <Image ref={ref} url={imageSources[6]} position={[0,-1.5,1]}/> 
                 <Line points = {nums} lineWidth={1} color={"black"}   />
                 <Line points = {nums2} lineWidth={.5} color={"black"}   />
+                <FixedImageSection 
+                    url = {imageSources[1]}
+                    x_position_ratio ={.5}
+                    y_position_ratio = {.5}
+                    z_index = {1}
+                    page = {1}
+                    x_scale ={.25}
+                    y_scale = {.125}
+                    zoomFactor = {1}
+                    x_movement = {0.5}
+                    y_movement = {0}
+                    fixed_range_start = {0}
+                    fixed_range_end = {0.5}
+                /> 
                 
-                {buildPoints()}
+                  
+                
+                
 
                 
 
