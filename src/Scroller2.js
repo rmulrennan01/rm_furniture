@@ -101,13 +101,13 @@ function Image_Trio({urls, spacing, ...props}){
     scale = default is 1, otherwise impacts size of image 
     zoomFactor = zoom when scrolling; negative will zoom out; positive will zooom in
     x_movement = positive float that impacts how the image moves when scrolling; negative results in left movement; positive results in right movement
-    y_movement = positive float that impacts how the image moves when scrolling; negative results in downward movement; positive results in upward movement
+    
     fixed_range = float between 0 & 1 that indicates cutoff point for where the image will no scroll out of view.
 
 
 */
 
-function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, page, x_scale, y_scale, zoomFactor, x_movement, y_movement, fixed_range_start, fixed_range_end}){
+function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, page, x_scale, y_scale, zoomFactor, x_movement,  fixed_range_start, fixed_range_end}){
     const ref = useRef(); 
     //const group_ref = useRef();
     const scroll_data = useScroll(); 
@@ -115,8 +115,6 @@ function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, pa
     const img_height = x_scale * w; 
     const img_width = y_scale * w; 
     const pos = [-1+x_position_ratio, -1+y_position_ratio + (page-1), z_index ]
-
-
 
     useFrame((state, delta) =>{
         //ref.current.material.grayscale = THREE.MathUtils.damp(ref.current.material.grayscale, Math.max(0, 1 - data.delta * 2000), 4, delta); 
@@ -131,25 +129,20 @@ function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, pa
             ref.current.position.y = -scroll_data.offset * h;
         }
        // ref.current.position.x = THREE.MathUtils.damp(ref.current.position.x, Math.max(0, scroll_data.delta * 500), 10, delta);
-        ref.current.position.x += x_movement* scroll_data.offset;
-        console.log("Offset: ", scroll_data.offset);  
-        ref.current.position.y += y_movement*scroll_data.delta; 
-       
+        //ref.current.position.x = pos[0] + x_movement* scroll_data.offset * (1/scroll_data.pages);
+        ref.current.position.x = pos[0] + (scroll_data.offset)*(1/scroll_data.pages)*x_movement; 
+        //console.log("Offset: ", scroll_data.offset);  
+        //ref.current.position.y = pos[1] + y_movement*scroll_data.offset; 
+        //  {console.log("Number of pages in scroll :", scroll_data.pages)}
     }); 
-
-
-
     return (
-      
         <Image 
             ref={ref} 
             url={url} 
             position={pos}
             scale = {[x_scale*w, y_scale*w, 1]}
         /> 
-        
     )
-
 }
 
 
@@ -169,10 +162,9 @@ function Image_Group({xOffset, yOffset, spacing, sources}){
     )
 }
 
+
 function Fixed_Image_Tile({url, xPercentage, yPercentage, zInd, scaleRatio, ...props}){
     const {width:w, height: h } = useThree((state) => state.viewport);
-    
-    
     return (
       <group {...props}>
             
@@ -183,8 +175,6 @@ function Fixed_Image_Tile({url, xPercentage, yPercentage, zInd, scaleRatio, ...p
             
       </group> 
     )
-
-
 }
 
 
@@ -251,34 +241,22 @@ function Scroller2() {
                 <Line points = {nums2} lineWidth={.5} color={"black"}   />
                 <FixedImageSection 
                     url = {imageSources[1]}
-                    x_position_ratio ={.5}
+                    x_position_ratio ={1}
                     y_position_ratio = {.5}
                     z_index = {1}
                     page = {1}
                     x_scale ={.25}
                     y_scale = {.125}
-                    zoomFactor = {1}
-                    x_movement = {0.5}
-                    y_movement = {0}
+                    zoomFactor = {2}
+                    x_movement = {4}
                     fixed_range_start = {0}
                     fixed_range_end = {0.5}
                 /> 
                 
-                  
-                
-                
-
-                
-
-
-              
             </Scroll> 
 
             
             {/*<Display_Words content={"Help me obi-wan kenobi!"} xPercentage={.5} yPercentage={1} zInd={2} scaleRatio={.1} /> */}
-
-
-            
 
 
             <Scroll html sytle={{width:'100%'}}> 
