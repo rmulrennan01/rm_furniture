@@ -134,6 +134,8 @@ function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, pa
         //console.log("Offset: ", scroll_data.offset);  
         //ref.current.position.y = pos[1] + y_movement*scroll_data.offset; 
         //  {console.log("Number of pages in scroll :", scroll_data.pages)}
+        
+        console.log(w);
     }); 
     return (
         <Image 
@@ -141,6 +143,7 @@ function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, pa
             url={url} 
             position={pos}
             scale = {[x_scale*w, y_scale*w, 1]}
+            
         /> 
     )
 }
@@ -149,15 +152,9 @@ function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, pa
 
 function Image_Group({xOffset, yOffset, spacing, sources}){
     const { width: w, height: h } = useThree((state) => state.viewport)
-  
-    
     return(
         <> 
             <Image_Trio position={[w*xOffset, h*yOffset, 0]} urls={[sources[0], sources[1], sources[3]]} spacing={spacing}/> 
-            
-      
-
-
         </> 
     )
 }
@@ -172,7 +169,6 @@ function Fixed_Image_Tile({url, xPercentage, yPercentage, zInd, scaleRatio, ...p
                 position={[w*xPercentage,-h*yPercentage-(w*scaleRatio/2), zInd]} 
                 scale={[w*scaleRatio, w*scaleRatio, 1]} url={url} 
             />
-            
       </group> 
     )
 }
@@ -180,51 +176,42 @@ function Fixed_Image_Tile({url, xPercentage, yPercentage, zInd, scaleRatio, ...p
 
 
 function Grid_Helper(){
-    
-
     const buildPointsX = () => {
         let listOverall = []; 
        
-        for (let i = -2; i<=2; i+=1){
+        for (let i = -5; i<=5; i+=1){
             let subList = []; 
-            for (let k = -2; k<=2; k+=.01){
+            for (let k = -5; k<=5; k+=.01){
                 subList.push([k,i,1])
             }
             listOverall.push(subList); 
         }
         return listOverall; 
     } ;
-
     const buildPointsY = () => {
         let listOverall = []; 
        
-        for (let i = -2; i<=2; i+=1){
+        for (let i = -5; i<=5; i+=1){
             let subList = []; 
-            for (let k = -2; k<=2; k+=.01){
+            for (let k = -5; k<=5; k+=.01){
                 subList.push([i,k,1])
             }
             listOverall.push(subList); 
         }
         return listOverall; 
     } ;
-
     const xLines = buildPointsX(); 
     const yLines = buildPointsY(); 
-
-
     const drawLines = (item) => {
         return(
             <Line points = {item} lineWidht = {1} color={"black"} /> 
         )
     }
-
     return(
         <>
             {xLines.map(drawLines)}
             {yLines.map(drawLines)}
         </> 
-        
-
     )
 }
 
@@ -237,71 +224,58 @@ function Grid_Helper(){
 
 function Scroller2() {
     const ref = useRef(); 
+    const canvas_ref = useRef(); 
     //const { height, width } = useThree((state) => state.viewport); 
 
-    const buildPoints = () => {
-        let list = []; 
-        for (let i = -2; i<=2; i=i+.01){
-            list.push([i,0,1])
-        }
 
-        console.log(list); 
-        return list; 
-
-
-    } ;
-
-
-    const buildPoints2 = () => {
-        let list = []; 
-        for (let i = -2; i<=2; i=i+.01){
-            list.push([0,i,1])
-        }
-
-        console.log(list); 
-        return list; 
-
-
-    } ;
-
-    const nums = buildPoints(); 
-    const nums2 = buildPoints2();
-
-
-
-//ImageSection({url, x_position_ratio, y_position_ratio, z_index, page, x_scale, y_scale, zoomFactor, x_movement, y_movement, fixed_range})
-
-    
   return (
-    <Canvas dpr={[1, 1.5]} camera={{fov: 85, position: [0,0,2], zoom:1 }}> 
+    <Canvas ref={canvas_ref} dpr={[1, 1.5]} camera={{fov: 75, position: [0,0,2], zoom:1 }}> 
         <Suspense fallback={null}>
+        {console.log(canvas_ref)}
         
       
         <color attach="background" args={['#f0f0f0']} />
 
         <ScrollControls damping={2} pages={2} distance={4} >   
             <Scroll> 
+                {/*
                 <Image_Group xOffset={0} yOffset={0} spacing={0.2} sources={imageSources}/> 
                 <Image_Group xOffset={.35} yOffset={-0.45} spacing={0.2} sources={imageSources}/> 
                 <Image_Group xOffset={-.35} yOffset={-0.45} spacing={0.2} sources={imageSources}/> 
+
+             */ }
                  
                {/* <Fixed_Image_Tile  url={imageSources[4]} xPercentage={0} yPercentage={.875} zInd={0} scaleRatio={.25} />  */}
-                <Image ref={ref} url={imageSources[6]} position={[0,-1.5,1]}/> 
+                {/*<Image ref={ref} url={imageSources[6]} position={[0,-1.5,1]}/> */}
            
                 <Grid_Helper /> 
                 <FixedImageSection 
                     url = {imageSources[1]}
                     x_position_ratio ={1}
                     y_position_ratio = {.5}
-                    z_index = {1}
+                    z_index = {0}
                     page = {1}
-                    x_scale ={.25}
-                    y_scale = {.125}
-                    zoomFactor = {2}
+                    x_scale ={.5}
+                    y_scale = {.5*9/16}
+                    zoomFactor = {1}
                     x_movement = {4}
                     fixed_range_start = {0}
                     fixed_range_end = {0.5}
                 /> 
+                <FixedImageSection 
+                    url = {imageSources[3]}
+                    x_position_ratio ={1}
+                    y_position_ratio = {.5}
+                    z_index = {0}
+                    page = {1}
+                    x_scale ={.5}
+                    y_scale = {.5*9/16}
+                    zoomFactor = {1}
+                    x_movement = {-4}
+                    fixed_range_start = {0}
+                    fixed_range_end = {0.5}
+                /> 
+     
                 
             </Scroll> 
 
