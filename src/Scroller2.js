@@ -2,11 +2,12 @@ import React, { Suspense } from 'react';
 import * as THREE from 'three';
 import { useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useIntersect, Image, ScrollControls, Scroll, useScroll, Line } from '@react-three/drei';
+import { useIntersect, Image, ScrollControls, Scroll, useScroll, Line, Html } from '@react-three/drei';
 import { isVisible } from '@testing-library/user-event/dist/utils';
 import { PerspectiveCamera } from 'three';
 import { Camera } from 'three';
 import { ContactsOutlined, GroupOutlined } from '@material-ui/icons';
+import "./Scroller.css";
 
 
 
@@ -44,7 +45,7 @@ function Image_Tile(props){
     })
     
     return(
-        <group ref={group}> 
+        <group ref={group} > 
             <Image  ref={ref} {...props} onPointerEnter={(e)=> console.log(ref.current.position.x, ref.current.position.y, ref.current.position.z)}/> 
             
         </group> 
@@ -135,7 +136,7 @@ function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, pa
         //ref.current.position.y = pos[1] + y_movement*scroll_data.offset; 
         //  {console.log("Number of pages in scroll :", scroll_data.pages)}
         
-        console.log(w);
+        //console.log(w);
     }); 
     return (
         <Image 
@@ -147,6 +148,51 @@ function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, pa
         /> 
     )
 }
+
+
+function FixedBannerSection({x_position_ratio, y_position_ratio, z_index, page, x_scale, y_scale, zoomFactor, x_movement,  fixed_range_start, fixed_range_end}){
+    const ref = useRef(); 
+    const html_ref= useRef(); 
+    //const group_ref = useRef();
+    const scroll_data = useScroll(); 
+    const { width: w, height: h } = useThree((state) => state.viewport);
+    const img_height = x_scale * w; 
+    const img_width = y_scale * w; 
+    const pos = [-1+x_position_ratio, -1+y_position_ratio + (page-1), z_index ]
+
+    useFrame((state, delta) =>{
+        //ref.current.material.grayscale = THREE.MathUtils.damp(ref.current.material.grayscale, Math.max(0, 1 - data.delta * 2000), 4, delta); 
+        //group.current.position.z = THREE.MathUtils.damp(group.current.position.z, Math.max(0, data.delta * 500), 10, delta);
+        //ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
+
+        const rInfo = scroll_data.range(fixed_range_start,fixed_range_end); 
+        // console.log("This is the scroll info: ", rInfo);
+        if(rInfo < 1){
+            // ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 1, 1, delta);
+           // html_ref.current.material.zoom = (1 + rInfo) * zoomFactor; 
+            //ref.current.position.y = -scroll_data.offset * h;
+        }
+       // ref.current.position.x = THREE.MathUtils.damp(ref.current.position.x, Math.max(0, scroll_data.delta * 500), 10, delta);
+        //ref.current.position.x = pos[0] + x_movement* scroll_data.offset * (1/scroll_data.pages);
+       //ref.current.position.x = pos[0] + (scroll_data.offset)*(1/scroll_data.pages)*x_movement; 
+        //console.log("Offset: ", scroll_data.offset);  
+        //ref.current.position.y = pos[1] + y_movement*scroll_data.offset; 
+        //  {console.log("Number of pages in scroll :", scroll_data.pages)}
+        
+        console.log(w);
+    }); 
+    return (
+        
+            <Html  ref={html_ref}  scale={[12,w,1]} position={pos}>  
+                <h1 className="scroller__banner"> Wassup</h1>
+                {console.log(ref.current)}
+                {console.log("Html item: ", html_ref)}
+            
+            </Html> 
+       
+    )
+}
+
 
 
 
@@ -231,7 +277,7 @@ function Scroller2() {
   return (
     <Canvas ref={canvas_ref} dpr={[1, 1.5]} camera={{fov: 75, position: [0,0,2], zoom:1 }}> 
         <Suspense fallback={null}>
-        {console.log(canvas_ref)}
+        
         
       
         <color attach="background" args={['#f0f0f0']} />
@@ -251,12 +297,12 @@ function Scroller2() {
                 <Grid_Helper /> 
                 <FixedImageSection 
                     url = {imageSources[1]}
-                    x_position_ratio ={1}
+                    x_position_ratio ={.5}
                     y_position_ratio = {.5}
                     z_index = {0}
                     page = {1}
-                    x_scale ={.5}
-                    y_scale = {.5*9/16}
+                    x_scale ={.125}
+                    y_scale = {.5}
                     zoomFactor = {1}
                     x_movement = {4}
                     fixed_range_start = {0}
@@ -264,14 +310,27 @@ function Scroller2() {
                 /> 
                 <FixedImageSection 
                     url = {imageSources[3]}
-                    x_position_ratio ={1}
+                    x_position_ratio ={1.5}
                     y_position_ratio = {.5}
                     z_index = {0}
                     page = {1}
-                    x_scale ={.5}
-                    y_scale = {.5*9/16}
+                    x_scale ={.125}
+                    y_scale = {.5}
                     zoomFactor = {1}
                     x_movement = {-4}
+                    fixed_range_start = {0}
+                    fixed_range_end = {0.5}
+                /> 
+                <FixedBannerSection 
+                    url = {imageSources[3]}
+                    x_position_ratio ={1.5}
+                    y_position_ratio = {.5}
+                    z_index = {-5}
+                    page = {1}
+                    x_scale ={.125}
+                    y_scale = {.5}
+                    zoomFactor = {1}
+                    x_movement = {0}
                     fixed_range_start = {0}
                     fixed_range_end = {0.5}
                 /> 
@@ -283,13 +342,7 @@ function Scroller2() {
             {/*<Display_Words content={"Help me obi-wan kenobi!"} xPercentage={.5} yPercentage={1} zInd={2} scaleRatio={.1} /> */}
 
 
-            <Scroll html sytle={{width:'100%'}}> 
-                <h1> Modern</h1> 
-                <h1 style={{ position: 'absolute', top: '180vh', left: '10vw' }}> Sustainable </h1>
-                <h1 style={{ position: 'absolute', top: '20vh', left: '10vw' }}> Clean</h1>
-                <h1 style={{ position: 'absolute', top: '10vh', left: '10vw' }}> Minimalist </h1>
-                <h1 style={{ position: 'absolute', top: '5vh', left: '5vw' }}> Natural Tones </h1>
-            </Scroll> 
+
  
 
         </ScrollControls>
