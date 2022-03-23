@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import * as THREE from 'three';
 import { useRef } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useThree, Vector3, Box3} from '@react-three/fiber';
 import { useIntersect, Image, ScrollControls, Scroll, useScroll, Line, Html } from '@react-three/drei';
 import { isVisible } from '@testing-library/user-event/dist/utils';
 import { PerspectiveCamera } from 'three';
@@ -15,83 +15,11 @@ import "./Scroller.css";
 const imageSources = ['/product_photos/home_1.png', '/product_photos/home_2.png', '/product_photos/home_3.png', '/product_photos/home_4.png', '/product_photos/home_5.png', '/product_photos/home_6.png', '/product_photos/home_7.png']; 
 
 
-//INDIVIDUAL IMAGE TILE
-function Image_Tile(props){
-    const inView = useRef(false); 
-    const group = useRef(); 
-    const data = useScroll(); 
-    const ref = useIntersect((visible) => (inView.current=visible)); //useIntersect can check if object is in vew. 
-    //const ref = useIntersect((visible) => console.log('object is visible', visible)); 
-    //const ref = useRef(); 
-//    const { height } = useThree((state) => state.viewport); 
-    const { width: w, height: h } = useThree((state) => state.viewport);
-    
-
-    useFrame((state, delta) => {
-   
-        //ref.current.material.grayscale = THREE.MathUtils.damp(ref.current.material.grayscale, Math.max(0, 1 - data.delta * 2000), 4, delta); 
-        //group.current.position.z = THREE.MathUtils.damp(group.current.position.z, Math.max(0, data.delta * 500), 10, delta);
-        //ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
-
-        const rInfo = data.range(0,.5); 
-       // console.log("This is the scroll info: ", rInfo);
-       if(rInfo < 1){
-          // ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 1, 1, delta);
-           ref.current.material.zoom = 1 + rInfo; 
-       }
-       
-        
-
-    })
-    
-    return(
-        <group ref={group} > 
-            <Image  ref={ref} {...props} onPointerEnter={(e)=> console.log(ref.current.position.x, ref.current.position.y, ref.current.position.z)}/> 
-            
-        </group> 
-    )
-}
 
 
 
-function Image_Trio({urls, spacing, ...props}){
-    const { height:h, width: w } = useThree((state) => state.viewport)
-    const adjFactor = w < 10 ? 1.5 / 3 : 1 / 3
-    const group = useRef(); 
-    const data = useScroll(); 
-    
-    useFrame((state, delta) => {
-        const rInfo = data.range(0,.5); 
-                
-        if (rInfo < 1){
-            //group.current.position.y = THREE.MathUtils.damp(group.current.position.y, (-w / 7) * rInfo, 4, delta); 
-            group.current.position.y = -data.offset * h; 
-            //console.log(data); 
-            //group.current.position.y = -1; 
-            //console.log(group.current.position.y); 
-            
 
-        }; 
-        
-        
-    })
 
-    
-    return (
-      <group ref={group} {...props}>
-          {/*
-        <Image_Tile position={[0,-width * adjFactor, -1]} scale={[width * adjFactor - m * 2, 5, 1]} url={urls[0]} />
-        <Image_Tile position={[0, 0, 0]} scale={[width * adjFactor - m * 2, 5, 1]} url={urls[1]} />
-        <Image_Tile position={[0,width * adjFactor, 1]} scale={[width * adjFactor - m * 2, 5, 1]} url={urls[2]} />
-          */ }
-            <Image_Tile position={[0,-adjFactor*spacing, -1]} scale={[w/5, w/5, 1]} url={urls[0]} />
-            <Image_Tile position={[0, 0, 0]} scale={[w/5, w/5, 1]} url={urls[1]} />
-            <Image_Tile position={[0,adjFactor*spacing, 1]} scale={[w/5, w/5, 1]} url={urls[2]} />
-           
-
-      </group> 
-    )
-}
 
 
 /*
@@ -121,6 +49,12 @@ function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, pa
         //ref.current.material.grayscale = THREE.MathUtils.damp(ref.current.material.grayscale, Math.max(0, 1 - data.delta * 2000), 4, delta); 
         //group.current.position.z = THREE.MathUtils.damp(group.current.position.z, Math.max(0, data.delta * 500), 10, delta);
         //ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
+        const pictureBound = new THREE.Box3();
+        pictureBound.setFromObject(ref.current);
+        //console.log(pictureBound); 
+        //console.log(pictureBound.min.x); 
+
+
 
         const rInfo = scroll_data.range(fixed_range_start,fixed_range_end); 
         // console.log("This is the scroll info: ", rInfo);
@@ -137,6 +71,7 @@ function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, pa
         //  {console.log("Number of pages in scroll :", scroll_data.pages)}
         
         //console.log(w);
+        //console.log(ref.current.geometry); 
     }); 
     return (
         <Image 
@@ -144,6 +79,7 @@ function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, pa
             url={url} 
             position={pos}
             scale = {[x_scale*w, y_scale*w, 1]}
+
             
         /> 
     )
@@ -158,7 +94,8 @@ function FixedBannerSection({x_position_ratio, y_position_ratio, z_index, page, 
     const { width: w, height: h } = useThree((state) => state.viewport);
     const img_height = x_scale * w; 
     const img_width = y_scale * w; 
-    const pos = [-1+x_position_ratio, -1+y_position_ratio + (page-1), z_index ]
+    //const pos = [-1+x_position_ratio, -1+y_position_ratio + (page-1), z_index ]
+    const pos = [0,0,z_index]; 
 
     useFrame((state, delta) =>{
         //ref.current.material.grayscale = THREE.MathUtils.damp(ref.current.material.grayscale, Math.max(0, 1 - data.delta * 2000), 4, delta); 
@@ -170,7 +107,8 @@ function FixedBannerSection({x_position_ratio, y_position_ratio, z_index, page, 
         if(rInfo < 1){
             // ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 1, 1, delta);
            // html_ref.current.material.zoom = (1 + rInfo) * zoomFactor; 
-            //ref.current.position.y = -scroll_data.offset * h;
+            ref.current.position.y = -scroll_data.offset * h;
+            ref.current.position.z = scroll_data.offset * 100 + z_index; 
         }
        // ref.current.position.x = THREE.MathUtils.damp(ref.current.position.x, Math.max(0, scroll_data.delta * 500), 10, delta);
         //ref.current.position.x = pos[0] + x_movement* scroll_data.offset * (1/scroll_data.pages);
@@ -179,45 +117,31 @@ function FixedBannerSection({x_position_ratio, y_position_ratio, z_index, page, 
         //ref.current.position.y = pos[1] + y_movement*scroll_data.offset; 
         //  {console.log("Number of pages in scroll :", scroll_data.pages)}
         
-        console.log(w);
+        //console.log("This is scroll offset: ", scroll_data.offset);
+       // console.log("Html item: ", html_ref.current);
+      // const pictureBound = new THREE.Box3();
+      // pictureBound.setFromObject(html_ref);
+       //console.log(pictureBound); 
+       //console.log(pictureBound.min.x); 
+         
     }); 
     return (
-        
+        <group ref={ref} >
             <Html  ref={html_ref}  scale={[12,w,1]} position={pos}>  
                 <h1 className="scroller__banner"> Wassup</h1>
                 {console.log(ref.current)}
-                {console.log("Html item: ", html_ref)}
+                {console.log("Html item: ", html_ref.current)}
+                
             
             </Html> 
-       
+        </group>
     )
 }
 
 
 
 
-function Image_Group({xOffset, yOffset, spacing, sources}){
-    const { width: w, height: h } = useThree((state) => state.viewport)
-    return(
-        <> 
-            <Image_Trio position={[w*xOffset, h*yOffset, 0]} urls={[sources[0], sources[1], sources[3]]} spacing={spacing}/> 
-        </> 
-    )
-}
 
-
-function Fixed_Image_Tile({url, xPercentage, yPercentage, zInd, scaleRatio, ...props}){
-    const {width:w, height: h } = useThree((state) => state.viewport);
-    return (
-      <group {...props}>
-            
-            <Image_Tile 
-                position={[w*xPercentage,-h*yPercentage-(w*scaleRatio/2), zInd]} 
-                scale={[w*scaleRatio, w*scaleRatio, 1]} url={url} 
-            />
-      </group> 
-    )
-}
 
 
 
@@ -275,8 +199,9 @@ function Scroller2() {
 
 
   return (
-    <Canvas ref={canvas_ref} dpr={[1, 1.5]} camera={{fov: 75, position: [0,0,2], zoom:1 }}> 
+    <Canvas ref={canvas_ref} dpr={[1, 1.5]} camera={{fov: 75, position: [0,0,10], zoom:1 }}> 
         <Suspense fallback={null}>
+            {console.log("Canvas: ", canvas_ref)}
         
         
       
@@ -297,7 +222,7 @@ function Scroller2() {
                 <Grid_Helper /> 
                 <FixedImageSection 
                     url = {imageSources[1]}
-                    x_position_ratio ={.5}
+                    x_position_ratio ={.15}
                     y_position_ratio = {.5}
                     z_index = {0}
                     page = {1}
@@ -310,7 +235,7 @@ function Scroller2() {
                 /> 
                 <FixedImageSection 
                     url = {imageSources[3]}
-                    x_position_ratio ={1.5}
+                    x_position_ratio ={.85}
                     y_position_ratio = {.5}
                     z_index = {0}
                     page = {1}
@@ -327,7 +252,7 @@ function Scroller2() {
                     y_position_ratio = {.5}
                     z_index = {-5}
                     page = {1}
-                    x_scale ={.125}
+                    x_scale ={0}
                     y_scale = {.5}
                     zoomFactor = {1}
                     x_movement = {0}
