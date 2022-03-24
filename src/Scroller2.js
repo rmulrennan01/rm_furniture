@@ -8,17 +8,11 @@ import { PerspectiveCamera } from 'three';
 import { Camera } from 'three';
 import { ContactsOutlined, GroupOutlined } from '@material-ui/icons';
 import "./Scroller.css";
+import { extend, useLoader } from "@react-three/fiber";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 
-
-//const imageSources = ['/product_photos/untitled45png.png','/product_photos/untitled46png.png','/product_photos/untitled47png.png','/product_photos/untitled48.png','/product_photos/untitled38.png']
 const imageSources = ['/product_photos/home_1.png', '/product_photos/home_2.png', '/product_photos/home_3.png', '/product_photos/home_4.png', '/product_photos/home_5.png', '/product_photos/home_6.png', '/product_photos/home_7.png']; 
-
-
-
-
-
-
 
 
 
@@ -46,9 +40,7 @@ function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, pa
     const pos = [-1+x_position_ratio, -1+y_position_ratio + (page-1), z_index ]
 
     useFrame((state, delta) =>{
-        //ref.current.material.grayscale = THREE.MathUtils.damp(ref.current.material.grayscale, Math.max(0, 1 - data.delta * 2000), 4, delta); 
-        //group.current.position.z = THREE.MathUtils.damp(group.current.position.z, Math.max(0, data.delta * 500), 10, delta);
-        //ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
+  
         const pictureBound = new THREE.Box3();
         pictureBound.setFromObject(ref.current);
         //console.log(pictureBound); 
@@ -59,19 +51,13 @@ function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, pa
         const rInfo = scroll_data.range(fixed_range_start,fixed_range_end); 
         // console.log("This is the scroll info: ", rInfo);
         if(rInfo < 1){
-            // ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 1, 1, delta);
+          
             ref.current.material.zoom = (1 + rInfo) * zoomFactor; 
             ref.current.position.y = -scroll_data.offset * h;
         }
-       // ref.current.position.x = THREE.MathUtils.damp(ref.current.position.x, Math.max(0, scroll_data.delta * 500), 10, delta);
-        //ref.current.position.x = pos[0] + x_movement* scroll_data.offset * (1/scroll_data.pages);
+
         ref.current.position.x = pos[0] + (scroll_data.offset)*(1/scroll_data.pages)*x_movement; 
-        //console.log("Offset: ", scroll_data.offset);  
-        //ref.current.position.y = pos[1] + y_movement*scroll_data.offset; 
-        //  {console.log("Number of pages in scroll :", scroll_data.pages)}
-        
-        //console.log(w);
-        //console.log(ref.current.geometry); 
+
     }); 
     return (
         <Image 
@@ -89,45 +75,26 @@ function FixedImageSection({url, x_position_ratio, y_position_ratio, z_index, pa
 function FixedBannerSection({x_position_ratio, y_position_ratio, z_index, page, x_scale, y_scale, zoomFactor, x_movement,  fixed_range_start, fixed_range_end}){
     const ref = useRef(); 
     const html_ref= useRef(); 
-    //const group_ref = useRef();
     const scroll_data = useScroll(); 
     const { width: w, height: h } = useThree((state) => state.viewport);
     const img_height = x_scale * w; 
     const img_width = y_scale * w; 
-    //const pos = [-1+x_position_ratio, -1+y_position_ratio + (page-1), z_index ]
     const pos = [0,0,z_index]; 
 
     useFrame((state, delta) =>{
-        //ref.current.material.grayscale = THREE.MathUtils.damp(ref.current.material.grayscale, Math.max(0, 1 - data.delta * 2000), 4, delta); 
-        //group.current.position.z = THREE.MathUtils.damp(group.current.position.z, Math.max(0, data.delta * 500), 10, delta);
-        //ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 5, 4, delta);
 
         const rInfo = scroll_data.range(fixed_range_start,fixed_range_end); 
-        // console.log("This is the scroll info: ", rInfo);
         if(rInfo < 1){
-            // ref.current.material.zoom = THREE.MathUtils.damp(ref.current.material.zoom, inView.current ? 1 : 1, 1, delta);
-           // html_ref.current.material.zoom = (1 + rInfo) * zoomFactor; 
             ref.current.position.y = -scroll_data.offset * h;
-            ref.current.position.z = scroll_data.offset * 100 + z_index; 
+            ref.current.position.z = (z_index + rInfo*100); 
+            //console.log("Z-position: ", ref.current.position.z); 
+            //console.log("Range: ", rInfo); 
         }
-       // ref.current.position.x = THREE.MathUtils.damp(ref.current.position.x, Math.max(0, scroll_data.delta * 500), 10, delta);
-        //ref.current.position.x = pos[0] + x_movement* scroll_data.offset * (1/scroll_data.pages);
-       //ref.current.position.x = pos[0] + (scroll_data.offset)*(1/scroll_data.pages)*x_movement; 
-        //console.log("Offset: ", scroll_data.offset);  
-        //ref.current.position.y = pos[1] + y_movement*scroll_data.offset; 
-        //  {console.log("Number of pages in scroll :", scroll_data.pages)}
-        
-        //console.log("This is scroll offset: ", scroll_data.offset);
-       // console.log("Html item: ", html_ref.current);
-      // const pictureBound = new THREE.Box3();
-      // pictureBound.setFromObject(html_ref);
-       //console.log(pictureBound); 
-       //console.log(pictureBound.min.x); 
-         
+  
     }); 
     return (
-        <group ref={ref} >
-            <Html  ref={html_ref}  scale={[12,w,1]} position={pos}>  
+        <group ref={ref} position={pos}>
+            <Html  transform={true} sprite={true} occlude={true}>  
                 <h1 className="scroller__banner"> Wassup</h1>
                 {console.log(ref.current)}
                 {console.log("Html item: ", html_ref.current)}
@@ -187,6 +154,32 @@ function Grid_Helper(){
 
 
 
+
+
+  function Model({src, scale, position}){
+        const gltf = useLoader(GLTFLoader, src); 
+        const ref = useRef(); 
+
+        useFrame((state, delta) =>{
+           // console.log("This is the 3d object: ", ref.current)
+           //ref.current.rotate.y += 12; 
+
+      
+        }); 
+
+
+
+        return(
+            <>
+                <primitive ref={ref} object={gltf.scene} scale={scale} position={position} /> 
+                {console.log("This is the 3d object: ", ref.current)}
+            
+            
+            </>
+        )
+
+  }
+
 //<Canvas orthographic camera={{ zoom: 50 }} gl={{ alpha: false, antialias: true, stencil: false, depth: false }} dpr={[1, 1.5]}> 
 
 //dampening: higher is faster
@@ -199,7 +192,7 @@ function Scroller2() {
 
 
   return (
-    <Canvas ref={canvas_ref} dpr={[1, 1.5]} camera={{fov: 75, position: [0,0,10], zoom:1 }}> 
+    <Canvas ref={canvas_ref} dpr={[1, 1.5]} camera={{fov: 75, position: [0,0,10], zoom: 1 } } shadows> 
         <Suspense fallback={null}>
             {console.log("Canvas: ", canvas_ref)}
         
@@ -250,7 +243,7 @@ function Scroller2() {
                     url = {imageSources[3]}
                     x_position_ratio ={1.5}
                     y_position_ratio = {.5}
-                    z_index = {-5}
+                    z_index = {2}
                     page = {1}
                     x_scale ={0}
                     y_scale = {.5}
@@ -259,7 +252,10 @@ function Scroller2() {
                     fixed_range_start = {0}
                     fixed_range_end = {0.5}
                 /> 
-     
+                <Model src={"/models/dresser_6_baked.gltf"} scale={1.0} position={[7,-10,2]}/> 
+                <ambientLight /> 
+                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} shadow-mapSize={[512, 512]} castShadow />
+
                 
             </Scroll> 
 
